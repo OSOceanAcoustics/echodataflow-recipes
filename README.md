@@ -5,7 +5,7 @@ This repository hosts recipes that can be used with [`Echodataflow`](https://git
 The recipes are stored with the following structure:
 ```
 recipes
-  |--- deploy_specs  # deployment specification for flows
-  |--- params  # parameters used by flows
+  |--- deploy     # deployment specification for flows
+  |--- params     # parameters used by flows
   |--- resources  # ancillary files used by flows
 ```
