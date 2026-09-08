@@ -1,0 +1,15 @@
+flow_start_time: null
+
+source:
+  mode: git
+  git:
+    url: https://github.com/OSOceanAcoustics/echodataflow.git
+    branch: main
+
+default_work_pool_name: local
+flows:
+  update_cache_MVBS:
+    deployment_name: update-cache-MVBS
+    interval: 10
+    cron_offset: 3
+    inject_time_offset: true

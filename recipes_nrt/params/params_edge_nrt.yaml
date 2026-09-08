@@ -1,0 +1,48 @@
+flows:
+  raw2Sv:
+    exclude_before: "YYYY-mm-DDTHH:MM:SS+00:00"
+    exclude_raw_file: []
+    parallel: False
+    encode_mode: power
+    waveform_mode: CW
+    depth_offset: 7
+    sonar_model: EK80
+    nmea_sentence: GGA
+    filename_pattern: "PREFIX-*.raw"
+    path_raw: /PATH/TO/raw
+    path_main: /PATH/TO/local_main
+    file_Sv_csv: Sv_files.csv
+
+  create_MVBS:
+    slice_mins: 20
+    num_slices: 3
+    range_bin: 1m
+    ping_time_bin: 5s
+    path_main: /PATH/TO/local_main
+    file_Sv_csv: Sv_files.csv
+    file_MVBS_csv: MVBS_files.csv
+
+  predict_hake:
+    slice_mins: 40
+    num_slices: 3
+    temperature: 0.5
+    softmax_threshold: 0.5
+    max_depth: 590.0
+    path_weight: /PATH/TO/model_weights/model.ckpt
+    path_main: /PATH/TO/local_main
+    file_MVBS_csv: MVBS_files.csv
+    file_prediction_csv: prediction_files.csv
+
+  file_upload_acoustics:
+    src_dir: /PATH/TO/local_main
+    dest_dir: ENDPOINT:BUCKET/acoustics
+    exclude_subdirs:
+      - Sv
+      - raw
+    max_age: 2
+
+  file_upload_trawl:
+    src_dir: /PATH/TO/trawl
+    dest_dir: ENDPOINT:BUCKET/trawl
+    exclude_subdirs: []
+    max_age: 2

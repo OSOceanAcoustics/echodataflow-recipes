@@ -1,0 +1,39 @@
+flows:
+  raw2Sv_postprocessing:
+    path_raw_list: /PATH/TO/SH2506_raw_list_organized.csv
+    path_raw: /PATH/TO/RAW_DATA
+    path_main: /PATH/TO/WORKFLOW_OUTPUT
+    start_time: "YYYY-mm-DDTHH:MM:SSZ"
+    end_time: "YYYY-mm-DDTHH:MM:SSZ"
+    new_file_num_limit: 200
+    task_retries: 2
+    task_retry_delay_seconds: 30
+    max_flow_run_attempts: 2
+    encode_mode: power
+    waveform_mode: CW
+    depth_offset: 7
+    sonar_model: EK80
+    nmea_sentence: GGA
+    file_Sv_csv: Sv_files.csv
+
+  create_MVBS_postprocessing:
+    path_main: /PATH/TO/WORKFLOW_OUTPUT
+    new_file_num_limit: 20
+    max_flow_run_attempts: 2
+    slice_mins: 20
+    range_bin: 1m
+    ping_time_bin: 5s
+    file_Sv_csv: Sv_files.csv
+    file_MVBS_csv: MVBS_files.csv
+
+  predict_hake_postprocessing:
+    path_main: /PATH/TO/WORKFLOW_OUTPUT
+    path_weight: /PATH/TO/ML_MODEL/model.ckpt
+    prediction_slice_mins: 40
+    temperature: 0.5
+    softmax_threshold: 0.5
+    max_depth: 590.0
+    nasc_range_bin: 10m
+    nasc_dist_bin: 0.5nmi
+    file_MVBS_csv: MVBS_files.csv
+    file_prediction_csv: prediction_files.csv
