@@ -1,0 +1,42 @@
+source:
+  mode: local
+
+default_work_pool_name: local
+
+concurrency_groups:
+  raw2Sv:
+    limit: 1
+  downstream:
+    limit: 3
+
+flows:
+  raw2Sv_postprocessing:
+    deployment_name: raw2Sv-postprocessing
+    concurrency_limit:
+      limit: 1
+      collision_strategy: CANCEL_NEW
+    concurrency_group: raw2Sv
+    task_runner:
+      type: dask
+      cluster_kwargs:
+        n_workers: 5
+        threads_per_worker: 2
+        processes: true
+    interval: 1
+
+  create_MVBS_postprocessing:
+    deployment_name: create-MVBS-postprocessing
+    concurrency_limit:
+      limit: 1
+      collision_strategy: CANCEL_NEW
+    concurrency_group: downstream
+    interval: 1
+
+  predict_hake_postprocessing:
+    deployment_name: predict-hake-postprocessing
+    concurrency_limit:
+      limit: 1
+      collision_strategy: CANCEL_NEW
+    concurrency_group: downstream
+    interval: 5
+    cron_offset: 1
