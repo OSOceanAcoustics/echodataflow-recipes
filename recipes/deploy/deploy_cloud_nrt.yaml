@@ -1,0 +1,35 @@
+flow_start_time: # use ISO8601 format: if UTC use +00:00 or Z
+
+source:
+  mode: local
+  git:
+    url: https://github.com/echostack-org/echodataflow.git
+    branch: origin/main
+
+default_work_pool_name: cloud-local
+
+flows:
+  ingest_haul:
+    deployment_name: ingest-haul
+    interval: 5
+
+  ingest_NASC:
+    deployment_name: ingest-NASC
+    deployment_concurrency:
+      limit: 1
+      collision_strategy: CANCEL_NEW
+    interval: 2
+
+  update_grid:
+    deployment_name: update-grid
+    triggers:
+      - expect: prefect.flow-run.Completed
+        resource_name: ingest-haul
+      - expect: prefect.flow-run.Completed
+        resource_name: ingest-NASC
+
+  update_cache_MVBS:
+    deployment_name: update-cache-MVBS
+    interval: 10
+    cron_offset: 3
+    inject_time_offset: true
